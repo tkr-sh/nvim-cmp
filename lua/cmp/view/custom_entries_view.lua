@@ -149,7 +149,7 @@ custom_entries_view.open = function(self, offset, entries)
     if view.dup == 1 or not dedup[e.completion_item.label] then
       dedup[e.completion_item.label] = true
       for _, field in ipairs(fields) do
-        self.column_width[field] = math.max(self.column_width[field], view[field].width)
+        self.column_width[field] = math.max(self.column_width[field], view[field] == nil and 0 or view[field].width)
       end
       table.insert(self.entries, e)
       table.insert(lines, ' ')
