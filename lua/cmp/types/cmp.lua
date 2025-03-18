@@ -32,11 +32,13 @@ cmp.PreselectMode = {
   None = 'none',
 }
 
----@alias cmp.ItemField 'abbr' | 'kind' | 'menu'
+---@alias cmp.ItemField 'abbr' | 'kind' | 'kindtext' | 'conflict' | 'menu'
 cmp.ItemField = {
   Abbr = 'abbr',
   Kind = 'kind',
   Menu = 'menu',
+  KindText = 'kindtext',
+  Conflict = 'conflict',
 }
 
 ---@class cmp.ContextOption

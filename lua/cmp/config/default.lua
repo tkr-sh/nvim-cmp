@@ -48,7 +48,7 @@ return function()
 
     formatting = {
       expandable_indicator = true,
-      fields = { 'abbr', 'kind', 'menu' },
+      fields = { 'abbr', 'kind', 'kindtext', 'conflict', 'menu' },
       format = function(_, vim_item)
         return vim_item
       end,

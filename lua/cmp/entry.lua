@@ -277,7 +277,20 @@ entry._get_view = function(self, item, entries_buf)
     view.abbr.text = item.abbr or ''
     view.abbr.bytes = #view.abbr.text
     view.abbr.width = vim.fn.strdisplaywidth(view.abbr.text)
-    view.abbr.hl_group = item.abbr_hl_group or (self:is_deprecated() and 'CmpItemAbbrDeprecated' or 'CmpItemAbbr')
+    local abbr_hl_group = '';
+    if self:is_deprecated() and 'CmpItemAbbrDeprecated' or 'CmpItemAbbr' then
+        -- abbr_hl_group.byte
+        
+    end
+
+    view.abbr.hl_group = abbr_hl_group
+    -- Text
+    view.kindtext = {}
+    view.kindtext.text = item.kindtext or ''
+    view.kindtext.bytes = #view.kindtext.text
+    view.kindtext.width = vim.fn.strdisplaywidth(view.kindtext.text)
+    view.kindtext.hl_group = item.kintdext_hl_group or ('CmpItemKindText' .. (types.lsp.CompletionItemKind[self:get_kind()] or ''))
+    -- Bg
     view.kind = {}
     view.kind.text = item.kind or ''
     view.kind.bytes = #view.kind.text
@@ -493,16 +506,30 @@ entry.get_documentation = function(self)
 
   local documents = {}
 
+  local has_path = item.data ~= nil and
+      item.data.imports ~= nil and
+      item.data.imports[1] ~= nil and
+      item.data.imports[1].full_import_path ~= nil
+
   -- detail
-  if item.detail and item.detail ~= '' then
+  if item.detail ~= nil or has_path then
     local ft = self.context.filetype
     local dot_index = string.find(ft, '%.')
+
     if dot_index ~= nil then
       ft = string.sub(ft, 0, dot_index - 1)
     end
+    local type = "";
+
+    if has_path then
+        type = item.data.imports[1].full_import_path
+    else
+        type = item.detail
+    end
+
     table.insert(documents, {
       kind = types.lsp.MarkupKind.Markdown,
-      value = ('```%s\n%s\n```'):format(ft, str.trim(item.detail)),
+      value = ('```%s\n%s\n```'):format(ft, str.trim(type)),
     })
   end
 
